@@ -2,7 +2,7 @@ package org.bookjspjpa.com.entity;
 
 public class Automovel {
 	private long id;
-	
+	//teste branchs
 	private Integer anoFabricacao;
 	private String modelo;
 	private Integer anoModelo;
