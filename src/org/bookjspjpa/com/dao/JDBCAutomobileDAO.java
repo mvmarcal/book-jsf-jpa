@@ -7,11 +7,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.bookjspjpa.com.entity.Automovel;
+import org.bookjspjpa.com.entity.Automobile;
 
-public class JDBCAutomovelDAO implements AutomovelDAO {
+public class JDBCAutomobileDAO implements AutomobileDAO {
 
-	private Connection abreConexao() {
+	private Connection getConnection() {
 		
 		try {
 			String driverName = "com.mysql.jdbc.Driver";
@@ -26,27 +26,26 @@ public class JDBCAutomovelDAO implements AutomovelDAO {
 			return DriverManager.getConnection(url,userName,password);
 			
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 	}
 	
 	@Override
-	public void salva(Automovel automovel) {
-		String sql = "insert into automoveis"
-				+ "(anoFabricacao, anoModelo, marca, modelo, observacoes)"
+	public void save(Automobile automobile) {
+		String sql = "insert into automobile"
+				+ "(MANUFACTURE_YEAR, MODEL_YEAR, BRAND, MODEL, COMMENTS)"
 				+ "values (?, ?, ?, ?, ?)";
 		
-		Connection cn = abreConexao();
+		Connection cn = getConnection();
 		
 		try{
 			PreparedStatement pstmt = cn.prepareStatement(sql);
-			pstmt.setInt(1, automovel.getAnoFabricacao());
-			pstmt.setInt(2, automovel.getAnoModelo());
-			pstmt.setString(3, automovel.getMarca());
-			pstmt.setString(4, automovel.getModelo());
-			pstmt.setString(5, automovel.getObservacoes());
+			pstmt.setInt(1, automobile.getManufactureYear());
+			pstmt.setInt(2, automobile.getModelYear());
+			pstmt.setString(3, automobile.getBrand());
+			pstmt.setString(4, automobile.getModel());
+			pstmt.setString(5, automobile.getComments());
 			
 			pstmt.execute();
 			pstmt.close();
@@ -63,23 +62,23 @@ public class JDBCAutomovelDAO implements AutomovelDAO {
 	}
 
 	@Override
-	public List<Automovel> lista() {
-		Connection cn = abreConexao();
-		String sql = "select * from automoveis";
-		Automovel automovel;
-		List<Automovel> automoveis = null;
+	public List<Automobile> listAll() {
+		Connection cn = getConnection();
+		String sql = "select * from automobile";
+		Automobile automovel;
+		List<Automobile> automoveis = null;
 		try {
 			PreparedStatement pstmt = cn.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()){
-				automovel = new Automovel();
+				automovel = new Automobile();
 				//, , marca, modelo, observacoes
-				automovel.setId(rs.getLong("id"));
-				automovel.setAnoFabricacao(rs.getInt("anoFabricacao"));
-				automovel.setAnoModelo(rs.getInt("anoModelo"));
-				automovel.setMarca(rs.getString("marca"));
-				automovel.setModelo(rs.getString("modelo"));
-				automovel.setObservacoes(rs.getString("observacoes"));
+				automovel.setId(rs.getLong("ID"));
+				automovel.setManufactureYear(rs.getInt("MANUFACTURE_YEAR"));
+				automovel.setModelYear(rs.getInt("MODEL_YEAR"));
+				automovel.setBrand(rs.getString("BRAND"));
+				automovel.setModel(rs.getString("MODEL"));
+				automovel.setComments(rs.getString("COMMENTS"));
 				
 				automoveis.add(automovel);
 			}
