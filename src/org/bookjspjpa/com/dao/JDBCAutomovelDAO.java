@@ -1,6 +1,7 @@
 package org.bookjspjpa.com.dao;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +12,23 @@ import org.bookjspjpa.com.entity.Automovel;
 public class JDBCAutomovelDAO implements AutomovelDAO {
 
 	private Connection abreConexao() {
-		// TODO Auto-generated method stub
+		
+		try {
+			String driverName = "com.mysql.jdbc.Driver";
+			Class.forName(driverName);
+			
+			String serverName = "localhost";
+			String mydatabase = "test";
+			String url = "jdbc:mysql://" + serverName + "/" + mydatabase;
+			String userName = "root";
+			String password = "";
+			
+			return DriverManager.getConnection(url,userName,password);
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 	
